@@ -6,7 +6,7 @@ services:
 
   backend:
     image: ghcr.io/use-tusk/tusk-backend:latest
-    env_file: ./backend/.env.docker
+    env_file: .env
     depends_on: &backend_depends_on
       postgres:
         condition: service_healthy
@@ -15,14 +15,14 @@ services:
 
   default:
     image: ghcr.io/use-tusk/tusk-backend:latest
-    env_file: ./backend/.env.docker
+    env_file: .env
     depends_on: *backend_depends_on
     environment:
       - GAE_SERVICE=default
 
   runs:
     image: ghcr.io/use-tusk/tusk-backend:latest
-    env_file: ./backend/.env.docker
+    env_file: ./env
     depends_on: *backend_depends_on
     environment:
       - GAE_SERVICE=runs
