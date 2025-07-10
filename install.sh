@@ -17,7 +17,7 @@ fi
 
 check() {
         local bin="$1" desc="$2"
-        if command -v "$bin" >/dev/null 2>&1; then
+        if command -v "$bin" &>/dev/null || $bin &>/dev/null; then
                 green "$desc found"
                 "$bin" --version 2>/dev/null || true
                 return 0
