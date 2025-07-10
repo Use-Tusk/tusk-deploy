@@ -1,21 +1,28 @@
 
+green() {
+        printf "\e[32m✅ %s\e[0m\n" "$1"
+}
+
+red() {
+        printf "\e[31m❌ %s\e[0m\n" "$1"
+}
+
 if uname -a | grep -q Ubuntu; then
-        echo "✅ You are running Ubuntu"
+        green "You are running Ubuntu."
 else
-        echo "⚠️ Please run this script on an Ubuntu machine image. You are currently on:"
+        red "Please run this script on an Ubuntu machine image. You are currently on:"
         uname -a
         exit 1;
 fi
 
-
 check() {
         local bin="$1" desc="$2"
         if command -v "$bin" >/dev/null 2>&1; then
-                printf "\e[32m✅ %s found\e[0m\n" "$desc"
+                green "$desc found"
                 "$bin" --version 2>/dev/null || true
                 return 0
         else
-                printf "\e[31m❌ %s missing\e[0m\n" "$desc"
+                red "$desc missing"
                 return 1
         fi
 }
@@ -36,23 +43,28 @@ install_docker() {
         sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
-if !(check docker); then
+if !(check docker "Docker engine"); then
         echo "Installing docker..."
         install_docker
 fi
 
-if !(check "docker compose"); then
+if !(check "docker compose version" "Docker compose"); then
         echo "Installing docker..."
         install_docker
 fi
 
-echo "✅ Installation complete"
+green "Installation complete"
 
 echo "You should have been provided with a docker registry key. Enter it below:"
 echo -n Registry key: 
 read key
-echo $key | docker login ghcr.io -u jxd-tusk --password-stdin
+echo $key | sudo docker login ghcr.io -u jxd-tusk --password-stdin
 
-echo "✅ Done."
+echo "Adding you to the docker group."
+echo "You will have to log out and back in for this to take effect."
+echo "In the meantime, you will have to launch docker compose with sudo."
+sudo usermod -aG docker $USER
+
+green "All done"
 echo "⌛️ Starting docker compose now..."
-docker compose up
+sudo docker compose up
