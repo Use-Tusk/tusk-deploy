@@ -1,4 +1,3 @@
-
 green() {
         printf "\e[32m✅ %s\e[0m\n" "$1"
 }
@@ -10,9 +9,8 @@ red() {
 if uname -a | grep -q Ubuntu; then
         green "You are running Ubuntu."
 else
-        red "Please run this script on an Ubuntu machine image. You are currently on:"
+        red "Parts of this this script will not work on non-Ubuntu machines. You are currently on:"
         uname -a
-        exit 1;
 fi
 
 check() {
@@ -58,13 +56,9 @@ green "Installation complete"
 echo "You should have been provided with a docker registry key. Enter it below:"
 echo -n Registry key: 
 read key
-echo $key | sudo docker login ghcr.io -u jxd-tusk --password-stdin
+echo $key | docker login ghcr.io -u jxd-tusk --password-stdin
 
 echo "Adding you to the docker group."
-echo "You will have to log out and back in for this to take effect."
-echo "In the meantime, you will have to launch docker compose with sudo."
 sudo usermod -aG docker $USER
 
-green "All done"
-echo "⌛️ Starting docker compose now..."
-sudo docker compose up
+green "All done! Please log out and log back in!"
