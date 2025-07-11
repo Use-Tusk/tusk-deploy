@@ -9,8 +9,6 @@ services:
       DOMAINS: >
         ${DOMAIN} -> http://frontend:1234,
         ${DOMAIN}:8000 -> http://backend:8000,
-        tusk.lvh.me -> http://frontend:1234,
-        tusk.lvh.me:8000 -> http://backend:8000,
       CLIENT_MAX_BODY_SIZE: 40M
       KEEPALIVE_TIMEOUT: 605
       PROXY_CONNECT_TIMEOUT: 600
