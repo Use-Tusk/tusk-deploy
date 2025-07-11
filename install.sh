@@ -53,6 +53,8 @@ fi
 
 green "Installation complete"
 
+echo "Fetching deps..."
+
 echo "You should have been provided with a docker registry key. Enter it below:"
 echo -n Registry key: 
 read key
@@ -61,4 +63,4 @@ echo $key | docker login ghcr.io -u jxd-tusk --password-stdin
 echo "Adding you to the docker group."
 sudo usermod -aG docker $USER
 
-green "All done! Please log out and log back in!"
+green "Done! Please remember to log out and log back in for the group changes to take effect!"
