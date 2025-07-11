@@ -1,8 +1,6 @@
 services:
   frontend:
     image: ghcr.io/use-tusk/tusk-frontend:latest
-    ports:
-      - "80:80"
 
   https-portal:
     image: steveltn/https-portal:1
