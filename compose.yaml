@@ -2,7 +2,7 @@ services:
   frontend:
     image: ghcr.io/use-tusk/tusk-frontend:latest
     ports:
-      - "1234:80"
+      - "80:80"
 
   backend:
     image: ghcr.io/use-tusk/tusk-backend:latest
