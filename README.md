@@ -33,3 +33,9 @@ Run the following in the cloned folder:
 docker compose pull
 docker compose up -d
 ```
+
+# SSL
+
+The `frontend` container comes with a self signed SSL cert.
+You may also provide your own by putting them in the `./ssl` folder.
+A cert and key have been provided as an example.
