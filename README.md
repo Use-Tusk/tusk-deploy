@@ -9,11 +9,9 @@ Simply clone this repo, run `./install.sh` and follow the prompts.
 However, it is also get started on other distros as long as you
 have installed docker and docker compose.
 
-To get started, log into your machine and run the following:
+To get started, log into your machine and run:
 ```
-git clone https://github.com/Use-Tusk/tusk-deploy.git
-cd tusk-deploy
-./install.sh
+bash <(curl https://raw.githubusercontent.com/Use-Tusk/tusk-deploy/refs/heads/main/one-liner.sh)
 ```
 You should have been provided with our docker registry key. Enter it when asked.
 After the script finishes, please log out and log back in for the user group
