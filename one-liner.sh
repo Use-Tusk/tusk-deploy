@@ -1,9 +1,7 @@
 git clone https://github.com/Use-Tusk/tusk-deploy.git tusk-deploy
-
-if grep -q "cd tusk-deploy" ~/.bashrc; then
+if ! grep -q "cd tusk-deploy" ~/.bashrc; then
         echo "cd tusk-deploy" >> ~/.bashrc
 fi
-
 cd tusk-deploy
 ./install.sh
 
