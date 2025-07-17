@@ -60,7 +60,7 @@ else
         red "Failed to generate .env file!"
 fi
 
-read -r -s -p "You should have been provided with a Docker registry key.\nRegistry key (leave empty to skip): " key
+read -r -s -p "You should have been provided with a Docker registry key."$'\n'"Registry key (leave empty to skip): " key
 
 if [[ -n $key ]]; then
         if printf '%s\n' "$key" | docker login ghcr.io -u jxd-tusk --password-stdin; then
@@ -68,6 +68,8 @@ if [[ -n $key ]]; then
         else
                 red "Docker registry login failed."
         fi
+else
+        echo
 fi
 
 echo "Adding you to the docker group."
