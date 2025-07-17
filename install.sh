@@ -51,22 +51,31 @@ if !(check "docker compose version" "Docker compose"); then
         install_docker
 fi
 
-green "Installation complete"
+green "Docker and compose installed."
 
-echo "Copying env file"
 cp .env.sample .env
+if [ $? -eq 0 ]; then
+        green "Generated .env file."
+else
+        red "Failed to generate .env file!"
+fi
 
 read -r -s -p "You should have been provided with a Docker registry key.\nRegistry key (leave empty to skip): " key
 
 if [[ -n $key ]]; then
-    if printf '%s\n' "$key" | docker login ghcr.io -u jxd-tusk --password-stdin; then
-        green "Login succeeded."
-    else
-        red "Login failed."
-    fi
+        if printf '%s\n' "$key" | docker login ghcr.io -u jxd-tusk --password-stdin; then
+                green "Docker registry login succeeded."
+        else
+                red "Docker registry login failed."
+        fi
 fi
 
 echo "Adding you to the docker group."
 sudo usermod -aG docker $USER
+if [ $? -eq 0 ]; then
+        green "Added you to the docker user group."
+else
+        red "Could not add you to the docker group!"
+fi
 
-green "Done!"
+echo "Done"
