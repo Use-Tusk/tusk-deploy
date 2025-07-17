@@ -53,7 +53,6 @@ services:
 volumes:
   db:
     driver: local
-  https-portal-data:
 
 networks: 
   default:
