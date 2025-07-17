@@ -17,7 +17,6 @@ check() {
         local bin="$1" desc="$2"
         if command -v "$bin" &>/dev/null || $bin &>/dev/null; then
                 green "$desc found"
-                "$bin" --version 2>/dev/null || true
                 return 0
         else
                 red "$desc missing"
@@ -60,6 +59,13 @@ else
         red "Failed to generate .env file!"
 fi
 
+sudo usermod -aG docker $USER
+if [ $? -eq 0 ]; then
+        green "Added you to the docker user group."
+else
+        red "Could not add you to the docker group!"
+fi
+
 read -r -s -p "You should have been provided with a Docker registry key."$'\n'"Registry key (leave empty to skip): " key
 
 if [[ -n $key ]]; then
@@ -72,12 +78,5 @@ else
         echo
 fi
 
-echo "Adding you to the docker group."
-sudo usermod -aG docker $USER
-if [ $? -eq 0 ]; then
-        green "Added you to the docker user group."
-else
-        red "Could not add you to the docker group!"
-fi
 
 echo "Done"
