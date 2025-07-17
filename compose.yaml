@@ -1,8 +1,13 @@
 services:
   frontend:
     image: ghcr.io/use-tusk/tusk-frontend:latest
+    env_file: .env
     ports:
-      - "1234:80"
+      - 80:80
+      - 443:443
+    volumes:
+      - ./ssl:/etc/ssl/
+    depends_on: ["backend"]
 
   backend:
     image: ghcr.io/use-tusk/tusk-backend:latest
@@ -10,8 +15,8 @@ services:
     depends_on: &backend_depends_on
       postgres:
         condition: service_healthy
-    ports:
-      - "8000:8000"
+    environment:
+      - GAE_SERVICE=user
 
   default:
     image: ghcr.io/use-tusk/tusk-backend:latest
@@ -43,6 +48,7 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
+
 
 volumes:
   db:

@@ -53,12 +53,22 @@ fi
 
 green "Installation complete"
 
-echo "You should have been provided with a docker registry key. Enter it below:"
-echo -n Registry key: 
+echo "Copying env file"
+cp .env.sample .env
+
+read -r -s -p "You should have been provided with a Docker registry key.\nRegistry key (leave empty to skip): " key
+echo
 read key
-echo $key | docker login ghcr.io -u jxd-tusk --password-stdin
+
+if [[ -n $key ]]; then
+    if printf '%s\n' "$key" | docker login ghcr.io -u jxd-tusk --password-stdin; then
+        green "Login succeeded."
+    else
+        red "Login failed."
+    fi
+fi
 
 echo "Adding you to the docker group."
 sudo usermod -aG docker $USER
 
-green "All done! Please log out and log back in!"
+green "Done!"
