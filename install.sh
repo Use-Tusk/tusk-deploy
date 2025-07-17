@@ -57,8 +57,6 @@ echo "Copying env file"
 cp .env.sample .env
 
 read -r -s -p "You should have been provided with a Docker registry key.\nRegistry key (leave empty to skip): " key
-echo
-read key
 
 if [[ -n $key ]]; then
     if printf '%s\n' "$key" | docker login ghcr.io -u jxd-tusk --password-stdin; then
