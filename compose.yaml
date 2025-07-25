@@ -58,3 +58,9 @@ networks:
   default:
     driver: bridge
 
+logging:
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "10"
+    mode: "non-blocking"

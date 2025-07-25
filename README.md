@@ -37,3 +37,7 @@ docker compose up -d
 The `frontend` container comes with a self signed SSL cert.
 You may also provide your own by putting them in the `./ssl` folder.
 A cert and key have been provided as an example.
+
+# Logs
+
+You can view logs with `docker compose logs`.
