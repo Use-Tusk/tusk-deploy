@@ -15,20 +15,27 @@ services:
     depends_on: &backend_depends_on
       postgres:
         condition: service_healthy
+      default:
     environment:
       - GAE_SERVICE=user
 
   default:
     image: ghcr.io/use-tusk/tusk-backend:latest
     env_file: .env
-    depends_on: *backend_depends_on
+    depends_on:
+      <<: *backend_depends_on
+      backend:
+        condition: service_started
     environment:
       - GAE_SERVICE=default
 
   runs:
     image: ghcr.io/use-tusk/tusk-backend:latest
     env_file: .env
-    depends_on: *backend_depends_on
+    depends_on:
+      <<: *backend_depends_on
+      backend:
+        condition: service_started
     environment:
       - GAE_SERVICE=runs
 
