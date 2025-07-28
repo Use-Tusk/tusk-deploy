@@ -15,7 +15,6 @@ services:
     depends_on: &backend_depends_on
       postgres:
         condition: service_healthy
-      default:
     environment:
       - GAE_SERVICE=user
 
