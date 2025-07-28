@@ -34,7 +34,7 @@ services:
     depends_on:
       <<: *backend_depends_on
       backend:
-        condition: service_started
+        condition: service_healthy
     environment:
       - GAE_SERVICE=default
 
@@ -45,7 +45,7 @@ services:
     depends_on:
       <<: *backend_depends_on
       backend:
-        condition: service_started
+        condition: service_healthy
     environment:
       - GAE_SERVICE=runs
 
