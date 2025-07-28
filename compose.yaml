@@ -1,3 +1,10 @@
+x-logging: &logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "10"
+    mode: "non-blocking"
+
 services:
   frontend:
     image: ghcr.io/use-tusk/tusk-frontend:latest
@@ -8,10 +15,12 @@ services:
     volumes:
       - ./ssl:/etc/ssl/
     depends_on: ["backend"]
+    logging: *logging
 
   backend:
     image: ghcr.io/use-tusk/tusk-backend:latest
     env_file: .env
+    logging: *logging
     depends_on: &backend_depends_on
       postgres:
         condition: service_healthy
@@ -21,6 +30,7 @@ services:
   default:
     image: ghcr.io/use-tusk/tusk-backend:latest
     env_file: .env
+    logging: *logging
     depends_on:
       <<: *backend_depends_on
       backend:
@@ -31,6 +41,7 @@ services:
   runs:
     image: ghcr.io/use-tusk/tusk-backend:latest
     env_file: .env
+    logging: *logging
     depends_on:
       <<: *backend_depends_on
       backend:
@@ -64,9 +75,3 @@ networks:
   default:
     driver: bridge
 
-logging:
-  driver: "json-file"
-  options:
-    max-size: "10m"
-    max-file: "10"
-    mode: "non-blocking"
