@@ -1,3 +1,10 @@
+x-logging: &logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "10"
+    mode: "non-blocking"
+
 services:
   frontend:
     image: ghcr.io/use-tusk/tusk-frontend:latest
@@ -8,28 +15,41 @@ services:
     volumes:
       - ./ssl:/etc/ssl/
     depends_on: ["backend"]
+    logging: *logging
 
   backend:
     image: ghcr.io/use-tusk/tusk-backend:latest
     env_file: .env
+    logging: *logging
     depends_on: &backend_depends_on
       postgres:
         condition: service_healthy
     environment:
+      - NODE_ENV=onprem
       - GAE_SERVICE=user
 
   default:
     image: ghcr.io/use-tusk/tusk-backend:latest
     env_file: .env
-    depends_on: *backend_depends_on
+    logging: *logging
+    depends_on:
+      <<: *backend_depends_on
+      backend:
+        condition: service_healthy
     environment:
+      - NODE_ENV=onprem
       - GAE_SERVICE=default
 
   runs:
     image: ghcr.io/use-tusk/tusk-backend:latest
     env_file: .env
-    depends_on: *backend_depends_on
+    logging: *logging
+    depends_on:
+      <<: *backend_depends_on
+      backend:
+        condition: service_healthy
     environment:
+      - NODE_ENV=onprem
       - GAE_SERVICE=runs
 
   postgres:
@@ -40,7 +60,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: tusk
-      PGPORT: 5433
     volumes:
       - db:/var/lib/postgresql/data
     healthcheck:
@@ -58,9 +77,3 @@ networks:
   default:
     driver: bridge
 
-logging:
-  driver: "json-file"
-  options:
-    max-size: "10m"
-    max-file: "10"
-    mode: "non-blocking"
