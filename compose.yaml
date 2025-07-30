@@ -8,12 +8,13 @@ x-logging: &logging
 services:
   frontend:
     image: ghcr.io/use-tusk/tusk-frontend:latest
+    restart: unless-stopped
     env_file: .env
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./ssl:/etc/ssl/
+      - nginx_secrets:/etc/letsencrypt
     depends_on: ["backend"]
     logging: *logging
 
@@ -72,8 +73,8 @@ services:
 volumes:
   db:
     driver: local
+  nginx_secrets:
 
 networks: 
   default:
     driver: bridge
-
