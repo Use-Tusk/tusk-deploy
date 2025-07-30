@@ -14,7 +14,9 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - nginx_secrets:/etc/letsencrypt
+      - nginx_secrets:/etc/certs
+    environment:
+      - CERTBOT_DNS_CREDENTIALS_DIR=/etc/certs
     depends_on: ["backend"]
     logging: *logging
 
@@ -69,10 +71,8 @@ services:
       timeout: 5s
       retries: 10
 
-
 volumes:
   db:
-    driver: local
   nginx_secrets:
 
 networks: 
